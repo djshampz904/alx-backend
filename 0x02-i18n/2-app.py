@@ -1,14 +1,13 @@
 #!/usr/bin/env python3
+"""A Basic Flask app.
 """
-Flask app with internationalization support.
-"""
-from flask import Flask, render_template, request
 from flask_babel import Babel
-from typing import Union
+from flask import Flask, render_template, request
 
 
 class Config:
-    """Configuration class for Flask app."""
+    """Represents a Flask Babel configuration.
+    """
     LANGUAGES = ["en", "fr"]
     BABEL_DEFAULT_LOCALE = "en"
     BABEL_DEFAULT_TIMEZONE = "UTC"
@@ -16,24 +15,23 @@ class Config:
 
 app = Flask(__name__)
 app.config.from_object(Config)
+app.url_map.strict_slashes = False
 babel = Babel(app)
 
 
 @babel.localeselector
-def get_locale() -> Union[str, None]:
+def get_locale() -> str:
+    """Retrieves the locale for a web page.
     """
-    Determine the best match with our supported languages.
-    """
-    return request.accept_languages.best_match(app.config['LANGUAGES'])
+    return request.accept_languages.best_match(app.config["LANGUAGES"])
 
 
 @app.route('/')
-def index() -> str:
-    """
-    Render the index page.
+def get_index() -> str:
+    """The home/index page.
     """
     return render_template('2-index.html')
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
