@@ -7,10 +7,6 @@ from flask_babel import Babel
 from typing import Union
 
 
-app = Flask(__name__)
-babel = Babel(app)
-
-
 class Config:
     """Configuration class for Flask app."""
     LANGUAGES = ["en", "fr"]
@@ -18,7 +14,9 @@ class Config:
     BABEL_DEFAULT_TIMEZONE = "UTC"
 
 
+app = Flask(__name__)
 app.config.from_object(Config)
+babel = Babel(app)
 
 
 @babel.localeselector
